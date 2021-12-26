@@ -40,6 +40,20 @@ public class Point2D : IEquatable<Point2D>
     {
         return new Point2D(a.x - b.x, a.y - b.y);
     }
+    public static Point2D operator +(Point2D a, Point2D b)
+    {
+        return new Point2D(a.x + b.x, a.y + b.y);
+    }
+
+    public static Point2D Min(Point2D a, Point2D b)
+    {
+        return new Point2D(Math.Min(a.x, b.x), Math.Min(a.y, b.y));
+    }
+
+    public static Point2D Max(Point2D a, Point2D b)
+    {
+        return new Point2D(Math.Max(a.x, b.x), Math.Max(a.y, b.y));
+    }
 
     public int Manhattan(Point2D? other = null)
     {

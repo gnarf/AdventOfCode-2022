@@ -52,17 +52,11 @@ class IntcodeComputer
     public void ParseCode(string code)
     {
         Memory.Clear();
+        index = 0;
         foreach (int mem in code.Split(',').Select(value => Convert.ToInt64(value)))
         {
             this[index++] = mem;
         }
-    }
-
-    public IntcodeComputer RunProgram(string code)
-    {
-        ParseCode(code);
-        RunProgram();
-        return this;
     }
 
     public IEnumerator<long>? inputs;
@@ -75,6 +69,8 @@ class IntcodeComputer
     [TestCase(1002, 0, ExpectedResult = 0)]
     [TestCase(1002, 1, ExpectedResult = 1)]
     [TestCase(1002, 2, ExpectedResult = 0)]
+    [TestCase(1099, 2, ExpectedResult = 0)]
+    [TestCase(21002, 2, ExpectedResult = 2)]
     public static int ParamMode(long opcode, long position)
     {
         opcode /= 100;
@@ -107,17 +103,38 @@ class IntcodeComputer
 
     public long ip = 0;
     public long relative = 0;
+
+    public bool debugger = false;
+
+    public void DEBUG(int length, string message)
+    {
+        sb.Clear();
+        for (int x=0; x<length; x++) sb.Append(this[ip + x]).Append(",");
+        string mem = sb.ToString();
+        if (debugger)
+        {
+            Console.WriteLine($"IP:{ip} RP:{relative} [{mem}] {message}");
+        }
+    }
     public async Task<long> StepAsync()
     {
         int opcode = (int)this[ip] % 100;
         if (opcode == 1) // ADD
         {
-            WriteParam(2, ReadParam(0) + ReadParam(1));
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            long result = op0 + op1;
+            DEBUG(4, $"ADD OP0: {op0} OP1: {op1} RES: {result}");
+            WriteParam(2, result);
             return ip += 4;
         }
         if (opcode == 2) // MUL
         {
-            WriteParam(2, ReadParam(0) * ReadParam(1));
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            long result = op0 * op1;
+            DEBUG(4, $"MUL OP0: {op0} OP1: {op1} RES: {result}");
+            WriteParam(2, op0 * op1);
             return ip += 4;
         }
         if (opcode == 3)
@@ -143,52 +160,71 @@ class IntcodeComputer
             {
                 throw new Exception("Ran out of input");
             }
+            DEBUG(2, $"INP Value: {value}");
+
             WriteParam(0, value);
             return ip += 2;
         }
         if (opcode == 4)
         {
             if (output is null) throw new Exception("Output not piped");
-            output(ReadParam(0));
+            long value = ReadParam(0);
+            DEBUG(2, $"OUT Value: {value}");
+            output(value);
             return ip += 2;
         }
         if (opcode == 5)
         {
-            if (ReadParam(0) != 0)
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            DEBUG(3, $"JNZ {op0} -> {op1}");
+            if (op0 != 0)
             {
-                return ip = ReadParam(1);
+                return ip = op1;
             }
             return ip += 3;
         }
         if (opcode == 6)
         {
-            if (ReadParam(0) == 0)
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            DEBUG(3, $"JEZ {op0} -> {op1}");
+            if (op0 == 0)
             {
-                return ip = ReadParam(1);
+                return ip = op1;
             }
             return ip += 3;
         }
 
         if (opcode == 7) // LT
         {
-            WriteParam(2, ReadParam(0) < ReadParam(1) ? 1 : 0);
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            DEBUG(4, $"LT {op0} {op1}");
+            WriteParam(2, op0 < op1 ? 1 : 0);
             return ip += 4;
         }
 
         if (opcode == 8) // EQ
         {
-            WriteParam(2, ReadParam(0) == ReadParam(1) ? 1 : 0);
+            long op0 = ReadParam(0);
+            long op1 = ReadParam(1);
+            DEBUG(4, $"EQ {op0} {op1}");
+            WriteParam(2, op0 == op1 ? 1 : 0);
             return ip += 4;
         }
 
         if (opcode == 9)
         {
-            relative += ReadParam(0);
+            long op0 = ReadParam(0);
+            DEBUG(2, $"REL {op0}");
+            relative += op0;
             return ip += 2;
         }
 
         if (opcode == 99) // HALT
         {
+            DEBUG(1, $"HALT");
             // Console.WriteLine("HALT");
             return -1;
         }
