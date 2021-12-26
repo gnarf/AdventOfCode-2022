@@ -10,12 +10,13 @@ class Day11 : Puzzle
         public Dictionary<Point2D, int> hullPainted = new Dictionary<Point2D, int>();
         public Point2D point = Point2D.zero;
         public Facing facing = Facing.Up;
+        public int defaultPaint = 0;
 
         public IEnumerable<long> Output()
         {
             while (true)
             {
-                int value = 0;
+                int value = defaultPaint;
                 hullPainted.TryGetValue(point, out value);
                 // Console.WriteLine("HULLPAINTER: Input sent " + value);
                 yield return (long)value;
@@ -111,13 +112,13 @@ class Day11 : Puzzle
 
     public override void Part2()
     {
-        var robot = new HullPainter();
+        var robot = new HullPainter{defaultPaint = 0};
         robot.hullPainted[Point2D.zero] = 1;
         var computer = new IntcodeComputer(lines[0])
         {
             inputs = robot.Output().GetEnumerator(),
             output = robot.Input,
-            debugger = true,
+            // debugger = true,
         };
         computer.RunProgram();
 
