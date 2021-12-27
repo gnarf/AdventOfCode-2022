@@ -21,9 +21,15 @@ if (RunnerType!=null && Activator.CreateInstance(RunnerType) is Puzzle runner)
     inputFile += ".txt";
     runner.Parse(inputFile);
     Console.WriteLine("###### PART 1 ######");
+    var clock = System.Diagnostics.Stopwatch.StartNew();
     runner.Part1();
+    clock.Stop();
+    Console.WriteLine(clock.Elapsed);
     Console.WriteLine("###### PART 2 ######");
+    clock = System.Diagnostics.Stopwatch.StartNew();
     runner.Part2();
+    clock.Stop();
+    Console.WriteLine(clock.Elapsed);
 }
 else
 {

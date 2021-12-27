@@ -21,7 +21,7 @@ class Day13 : Puzzle
         {
             if (index == 0)
             {
-                x=(int)value;
+                x = (int)value;
             }
             else if (index == 1)
             {
@@ -32,7 +32,7 @@ class Day13 : Puzzle
                 if (x == -1 && y == 0) score = (int)value;
                 else
                 {
-                    screen[new Point2D(x, y)] = (int) value;
+                    screen[new Point2D(x, y)] = (int)value;
                     if (value == 4)
                     {
                         var newball = new Point2D(x, y);
@@ -73,7 +73,7 @@ class Day13 : Puzzle
             {
                 int value = defaultValue;
                 grid.TryGetValue(new Point2D(x, y), out value);
-                Console.Write( value );
+                Console.Write(value);
             }
             Console.WriteLine();
         }
@@ -103,5 +103,5 @@ class Day13 : Puzzle
         computer[0] = 2;
         computer.RunProgram();
         Console.WriteLine(arcade.score);
-    }
+   }
 }
