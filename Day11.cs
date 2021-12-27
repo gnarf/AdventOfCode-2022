@@ -9,7 +9,7 @@ class Day11 : Puzzle
     {
         public Dictionary<Point2D, int> hullPainted = new Dictionary<Point2D, int>();
         public Point2D point = Point2D.zero;
-        public Facing facing = Facing.Up;
+        public Facing2D facing = Facing2D.Up;
         public int defaultPaint = 0;
 
         public IEnumerable<long> Output()
@@ -51,32 +51,27 @@ class Day11 : Puzzle
         }
     }
 
-    public enum Facing
+    public static Dictionary<Facing2D, Facing2D> RightTurn = new Dictionary<Facing2D, Facing2D>
     {
-        Up, Right, Down, Left
+        {Facing2D.Up, Facing2D.Right},
+        {Facing2D.Right, Facing2D.Down},
+        {Facing2D.Down, Facing2D.Left},
+        {Facing2D.Left, Facing2D.Up}
+    };
+    public static Dictionary<Facing2D, Facing2D> LeftTurn = new Dictionary<Facing2D, Facing2D>
+    {
+        {Facing2D.Up, Facing2D.Left},
+        {Facing2D.Left, Facing2D.Down},
+        {Facing2D.Down, Facing2D.Right},
+        {Facing2D.Right, Facing2D.Up}
     };
 
-    public static Dictionary<Facing, Facing> RightTurn = new Dictionary<Facing, Facing>
+    public static Dictionary<Facing2D, Point2D> FacingVector = new Dictionary<Facing2D, Point2D>
     {
-        {Facing.Up, Facing.Right},
-        {Facing.Right, Facing.Down},
-        {Facing.Down, Facing.Left},
-        {Facing.Left, Facing.Up}
-    };
-    public static Dictionary<Facing, Facing> LeftTurn = new Dictionary<Facing, Facing>
-    {
-        {Facing.Up, Facing.Left},
-        {Facing.Left, Facing.Down},
-        {Facing.Down, Facing.Right},
-        {Facing.Right, Facing.Up}
-    };
-
-    public static Dictionary<Facing, Point2D> FacingVector = new Dictionary<Facing, Point2D>
-    {
-        { Facing.Up, new Point2D(0,-1) },
-        { Facing.Down, new Point2D(0,1) },
-        { Facing.Left, new Point2D(-1,0) },
-        { Facing.Right, new Point2D(1,0) },
+        { Facing2D.Up, new Point2D(0,-1) },
+        { Facing2D.Down, new Point2D(0,1) },
+        { Facing2D.Left, new Point2D(-1,0) },
+        { Facing2D.Right, new Point2D(1,0) },
     };
 
     // public override void Part1()

@@ -73,3 +73,9 @@ public class Point2D : IEquatable<Point2D>
 
     public static readonly Point2D zero = new Point2D(0, 0);
 }
+
+public enum Facing2D
+{
+    Up, Right, Down, Left
+};
+
