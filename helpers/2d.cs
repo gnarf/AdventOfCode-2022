@@ -54,6 +54,10 @@ public class Point2D : IEquatable<Point2D>
     {
         return new Point2D(Math.Max(a.x, b.x), Math.Max(a.y, b.y));
     }
+    public static Point2D Sign(Point2D a)
+    {
+        return new Point2D(Math.Sign(a.x), Math.Sign(a.y));
+    }
 
     public int Manhattan(Point2D? other = null)
     {
