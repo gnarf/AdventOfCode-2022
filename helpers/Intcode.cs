@@ -53,7 +53,7 @@ class IntcodeComputer
     {
         Memory.Clear();
         index = 0;
-        foreach (int mem in code.Split(',').Select(value => Convert.ToInt64(value)))
+        foreach (var mem in code.Split(',').Select(value => Convert.ToInt64(value)))
         {
             this[index++] = mem;
         }
@@ -116,6 +116,7 @@ class IntcodeComputer
             Console.WriteLine($"IP:{ip} RP:{relative} [{mem}] {message}");
         }
     }
+    public int dcount;
     public async Task<long> StepAsync()
     {
         int opcode = (int)this[ip] % 100;
@@ -171,6 +172,7 @@ class IntcodeComputer
             long value = ReadParam(0);
             DEBUG(2, $"OUT Value: {value}");
             output(value);
+            if(value!=1)dcount++;
             return ip += 2;
         }
         if (opcode == 5)
@@ -281,6 +283,18 @@ class IntcodeComputer
         };
         computer.RunProgram();
         return result;
+    }
+
+    [TestCase("104,1125899906842624,99", ExpectedResult=new[] {1125899906842624})]
+    public static long[] OutputTests(string program)
+    {
+        List<long> output = new List<long>();
+        var computer = new IntcodeComputer(program)
+        {
+            output = output.Add
+        };
+        computer.RunProgram();
+        return output.ToArray();
 
     }
 

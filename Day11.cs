@@ -24,7 +24,7 @@ class Day11 : Puzzle
         }
 
         public bool nextIsPaint = true;
-
+        public int counter = 0;
         public void Input(long value)
         {
             if (nextIsPaint)
@@ -32,6 +32,7 @@ class Day11 : Puzzle
                 nextIsPaint = false;
                 // Console.WriteLine("HULLPAINTER: Paint: " + value);
                 hullPainted[point] = (int)value;
+                counter++;
             }
             else
             {
@@ -118,7 +119,7 @@ class Day11 : Puzzle
         {
             inputs = robot.Output().GetEnumerator(),
             output = robot.Input,
-            // debugger = true,
+            debugger = true,
         };
         computer.RunProgram();
 
