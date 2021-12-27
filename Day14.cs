@@ -17,7 +17,7 @@ class Day14 : Puzzle
         public static Component Parse(string p)
         {
             var parts = p.Split(" ");
-            return new Component{quantity = Convert.ToInt32(parts[0]), resource = parts[1]};
+            return new Component { quantity = Convert.ToInt32(parts[0]), resource = parts[1] };
         }
     }
 
@@ -31,7 +31,7 @@ class Day14 : Puzzle
     public void ParseLines()
     {
         map.Clear();
-        foreach(var line in lines)
+        foreach (var line in lines)
         {
             var sp = line.Split(" => ");
             var output = Component.Parse(sp[1]);
@@ -53,7 +53,7 @@ class Day14 : Puzzle
         while (loop)
         {
             loop = false;
-            foreach(var (resource, needed) in resourceNeeded.ToArray())
+            foreach (var (resource, needed) in resourceNeeded.ToArray())
             {
                 if (resource == "ORE") continue;
                 var (output, input) = map[resource];
@@ -95,7 +95,7 @@ class Day14 : Puzzle
         while (loop)
         {
             loop = false;
-            foreach(var (resource, needed) in resourceNeeded.ToArray())
+            foreach (var (resource, needed) in resourceNeeded.ToArray())
             {
                 if (resource == "ORE") continue;
                 var (output, input) = map[resource];
@@ -131,11 +131,10 @@ class Day14 : Puzzle
         long top = 1000000000000;
         long bottom = 1;
 
-        while (Math.Abs(top-bottom)>1)
+        while (Math.Abs(top - bottom) > 1)
         {
-            long test = (top+bottom)/2;
+            long test = (top + bottom) / 2;
             long ore = OreNeeded(test);
-            Console.WriteLine($"Testing {test} {ore}");
             if (ore > 1000000000000)
             {
                 top = test;
