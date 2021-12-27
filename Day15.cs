@@ -148,6 +148,7 @@ class Day15 : Puzzle
         };
         computer.RunProgram();
         robot.PrintGrid();
+        if (robot.targetLocation is null) throw new Exception("Didn't find target");
 
         List<(Point2D point, int cost)> field = new List<(Point2D point, int cost)>(FacingVector.Values.Intersect(robot.visited).Select(point=>(point,cost: 1)));
         Dictionary<Point2D, int> costs = new Dictionary<Point2D, int>
@@ -179,6 +180,8 @@ class Day15 : Puzzle
         };
         computer.RunProgram();
         robot.PrintGrid();
+
+        if (robot.targetLocation is null) throw new Exception("Didn't find target");
 
         List<(Point2D point, int cost)> field = new List<(Point2D point, int cost)>(FacingVector.Values.Select(p=>p+robot.targetLocation).Intersect(robot.visited).Select(point=>(point,cost: 1)));
         Dictionary<Point2D, int> costs = new Dictionary<Point2D, int>
