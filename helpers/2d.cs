@@ -27,6 +27,11 @@ public class Point2D : IEquatable<Point2D>
         return Tuple.Create(x, y).GetHashCode();
     }
 
+    public double tan()
+    {
+        return (double)y / (double)x;
+    }
+
     public static bool operator ==(Point2D a, Point2D b)
     {
         return a?.Equals(b) ?? b is null;

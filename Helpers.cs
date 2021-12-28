@@ -2,7 +2,7 @@ namespace AoC2019;
 using System.IO;
 
 public abstract class Puzzle {
-    public string[] lines = new string[0];
+    public static string[] lines = new string[0];
     public virtual void Parse(string filename)
     {
         lines = File.ReadAllLines(filename);
