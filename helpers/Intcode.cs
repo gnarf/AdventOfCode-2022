@@ -239,10 +239,10 @@ class IntcodeComputer
         return RunProgramAsync().Result;
     }
 
-    public async Task<IntcodeComputer> RunProgramAsync()
+    public async Task<IntcodeComputer> RunProgramAsync(CancellationToken? ct = null)
     {
         index = 0;
-        while ((await StepAsync().ConfigureAwait(false)) >= 0) ;
+        while ((await StepAsync().ConfigureAwait(false)) >= 0) ct?.ThrowIfCancellationRequested();
         return this;
     }
 
