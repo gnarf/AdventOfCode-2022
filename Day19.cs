@@ -68,7 +68,6 @@ class Day19 : Puzzle
         double maxTan = 0;
         double maxUnder = 0;
         double minOver = 5;
-        int sureity = 49;
         void parse(Point2D point, int value)
         {
             double tan = point.y / (double)point.x;

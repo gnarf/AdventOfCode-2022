@@ -41,6 +41,11 @@ class Day20 : Puzzle
             var l1 = portalPoints[0];
             portalPoints.RemoveAt(0);
             var l2 = portalPoints.Find(p => p.Manhattan(l1) == 1);
+            if (l2 is null)
+            {
+                Console.WriteLine("Something went wrong, we didn't find our letter pair for this portal: " + l1);
+                continue;
+            }
             portalPoints.Remove(l2);
 
             if (l1.x > l2.x || l1.y > l2.y) (l1, l2) = (l2, l1);

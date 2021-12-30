@@ -93,7 +93,7 @@ class Day17 : Puzzle
         public List<(Turn turn, int dist)> instructions = new List<(Turn turn, int dist)>();
         public CameraReader camera;
         public List<Point2D> scaffolds => camera.scaffolds;
-        public string commands;
+        public string commands = "";
 
         public RobotController(CameraReader cam)
         {

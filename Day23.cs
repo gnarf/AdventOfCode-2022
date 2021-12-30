@@ -24,7 +24,7 @@ class Day23 : Puzzle
         {
             computer = new IntcodeComputer(lines[0])
             {
-                inputsAsync = Input().GetAsyncEnumerator(),
+                inputs = Input().GetEnumerator(),
                 output = Output
             };
             this.address = address;
@@ -32,7 +32,7 @@ class Day23 : Puzzle
 
         public bool reading = true;
 
-        public async IAsyncEnumerable<long> Input()
+        public IEnumerable<long> Input()
         {
             yield return address;
             var reader = channels[(int)address].Reader;
