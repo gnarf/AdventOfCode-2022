@@ -1,4 +1,4 @@
-﻿using AoC2019;
+﻿using AoC2022;
 
 // See https://aka.ms/new-console-template for more information
 if (args.Length < 1)
@@ -7,7 +7,7 @@ if (args.Length < 1)
     return;
 }
 
-string day = "AoC2019.Day"+args[0];
+string day = "AoC2022.Day"+args[0];
 
 Console.WriteLine("looking for " + day);
 Type? RunnerType = System.Reflection.Assembly.GetExecutingAssembly().GetType(day);

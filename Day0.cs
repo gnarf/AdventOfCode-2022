@@ -1,5 +1,5 @@
 using NUnit.Framework;
-namespace AoC2019;
+namespace AoC2022;
 
 class Day0 : Puzzle
 {

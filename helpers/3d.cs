@@ -1,4 +1,4 @@
-namespace AoC2019;
+namespace AoC2022;
 
 public class Point3D : IEquatable<Point3D>
 {

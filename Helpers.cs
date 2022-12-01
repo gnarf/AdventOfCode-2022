@@ -1,4 +1,4 @@
-namespace AoC2019;
+namespace AoC2022;
 using System.IO;
 
 public abstract class Puzzle {
