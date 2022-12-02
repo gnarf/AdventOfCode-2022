@@ -27,8 +27,6 @@ class Day1 : Puzzle
 
     public override void Part2()
     {
-        elves.Sort();
-        elves.Reverse();
-        Console.WriteLine(elves.Take(3).Sum());
+        Console.WriteLine(elves.ToList().Sorted().Reversed().Take(3).Sum());
     }
 }
