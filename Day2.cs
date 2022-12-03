@@ -7,13 +7,39 @@ class Day2 : Puzzle
     {
         public Shape P1;
         public Shape P2;
+
+        public GameResult result
+        {
+            get
+            {
+                if (P1 == P2) return GameResult.Draw;
+                return P2 == Beats(P1) ? GameResult.Win : GameResult.Lose;
+            }
+        }
+
+        public int turnTotalScore => (int) P2 + (int) result;
     }
 
-    enum Shape
+    enum GameResult
+    {
+        Win = 6,
+        Draw = 3,
+        Lose = 0,
+    };
+
+    public enum Shape
     {
         Rock = 1,
         Paper = 2,
         Scissors = 3
+    };
+
+    public static Shape Beats(Shape X) => X switch
+    {
+        Shape.Rock => Shape.Paper,
+        Shape.Paper => Shape.Scissors,
+        Shape.Scissors => Shape.Rock,
+        _ => throw new Exception(),
     };
 
 
@@ -28,26 +54,7 @@ class Day2 : Puzzle
         var score = 0;
         foreach (var turn in turns)
         {
-            score += (int)turn.P2;
-            if (turn.P1 == turn.P2)
-            {
-                score += 3;
-            }
-            else
-            if (turn.P1 == Shape.Rock)
-            {
-                score += turn.P2 == Shape.Paper ? 6 : 0;
-            }
-            else
-            if (turn.P1 == Shape.Paper)
-            {
-                score += turn.P2 == Shape.Scissors ? 6 : 0;
-            }
-            else
-            if (turn.P1 == Shape.Scissors)
-            {
-                score += turn.P2 == Shape.Rock ? 6 : 0;
-            }
+            score += turn.turnTotalScore;
         }
         Console.WriteLine(score);
     }
@@ -58,33 +65,29 @@ class Day2 : Puzzle
         foreach (var line in lines)
         {
             var moves = line.Split(" ");
-            score += moves[1] switch
+            var strat = moves[1] switch
             {
-                "X" => 0,
-                "Y" => 3,
-                "Z" => 6,
+                "X" => GameResult.Lose,
+                "Y" => GameResult.Draw,
+                "Z" => GameResult.Win,
+                _ => throw new Exception(),
             };
-            var shape = moves[0] switch { "A" => Shape.Rock, "B" => Shape.Paper, "C" => Shape.Scissors, _ => throw new Exception() };
-            if (moves[1] == "Y")
+            var P1 = moves[0] switch {
+                "A" => Shape.Rock,
+                "B" => Shape.Paper,
+                "C" => Shape.Scissors,
+                _ => throw new Exception()
+            };
+            var P2 = strat switch
             {
-                score += (int)shape;
-            }
-            else
-            if (shape == Shape.Rock)
-            {
-                score += moves[1] == "X" ? (int)Shape.Scissors : (int) Shape.Paper;
-            }
-            else
-            if (shape == Shape.Paper)
-            {
-                score += moves[1] == "X" ? (int)Shape.Rock : (int) Shape.Scissors;
-            }
-            else
-            if (shape == Shape.Scissors)
-            {
-                score += moves[1] == "X" ? (int)Shape.Paper : (int) Shape.Rock;
-            }
-        }
+                GameResult.Win => Beats(P1),
+                GameResult.Draw => P1,
+                GameResult.Lose => Beats(Beats(P1)),
+                _ => throw new Exception(),
+            };
+            var turn = new GameTurn{P1 = P1, P2 = P2};
+            score += turn.turnTotalScore;
+       }
         Console.WriteLine(score);
     }
 }
