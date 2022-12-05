@@ -6,31 +6,48 @@ namespace AoC2022;
 class Day5 : Puzzle
 {
 
-    public Stack<char>[] stacks = new Stack<char>[10];
-    public override void Part1()
-    {
-        var list = lines.ToList();
-        var tableBottom = list.FindIndex(s=> s==" 1   2   3   4   5   6   7   8   9 ");
+    private int tableBottom;
 
+    /// <summary>
+    /// Returns a array of Stack<char> representing the game state from the input file.
+    /// index 0 of the array is empty intentionally to make working with "from index 1" pointing at index 1.
+    /// </summary>
+    Stack<char>[] getInitialState()
+    {
+        tableBottom = Array.FindIndex(lines, s=> s==" 1   2   3   4   5   6   7   8   9 ");
+
+        Stack<char>[] state = Enumerable.Repeat(0, 10).Select((s)=>new Stack<char>()).ToArray();
         for (int x=tableBottom - 1; x >= 0; x--)
         {
-            list[x] = list[x].PadRight(30,' ');
+            lines[x] = lines[x].PadRight(30,' ');
             for (int y=1; y<10; y++)
             {
-                stacks[y] ??= new Stack<char>();
-                var c = list[x][(y*4) - 3];
+                var c = lines[x][(y*4) - 3];
                 if (c != ' ')
-                    stacks[y].Push(c);
+                    state[y].Push(c);
             }
-
         }
-        
-        for (int x=tableBottom+2; x< list.Count; x++)
+
+        return state;
+    }
+
+    IEnumerable<(int count, int fromStack, int toStack)> getGameMoves()
+    {
+        for (int x=tableBottom+2; x< lines.Length; x++)
         {
-            var parts = list[x].Split(' ');
+            var parts = lines[x].Split(' ');
             int count = Convert.ToInt32(parts[1]);
             int fromStack = Convert.ToInt32(parts[3]);
             int toStack = Convert.ToInt32(parts[5]);
+            yield return (count, fromStack, toStack);
+        }
+    }
+
+    public override void Part1()
+    {
+        var stacks = getInitialState();
+        foreach ((int count, int fromStack, int toStack) in getGameMoves())
+        {
             for (int y=0; y<count;y++)
             {
                 stacks[toStack].Push(stacks[fromStack].Pop());
@@ -44,29 +61,10 @@ class Day5 : Puzzle
 
     public override void Part2()
     {
-        var list = lines.ToList();
-        var tableBottom = list.FindIndex(s=> s==" 1   2   3   4   5   6   7   8   9 ");
-
-        for (int x=tableBottom - 1; x >= 0; x--)
+        var stacks = getInitialState();
+        var swap = new Stack<char>(); // temp buffer to hold the swapping stack 
+        foreach ((int count, int fromStack, int toStack) in getGameMoves())
         {
-            list[x] = list[x].PadRight(30,' ');
-            for (int y=1; y<10; y++)
-            {
-                stacks[y] ??= new Stack<char>();
-                var c = list[x][(y*4) - 3];
-                if (c != ' ')
-                    stacks[y].Push(c);
-            }
-
-        }
-        
-        var swap = new Stack<char>();
-        for (int x=tableBottom+2; x< list.Count; x++)
-        {
-            var parts = list[x].Split(' ');
-            int count = Convert.ToInt32(parts[1]);
-            int fromStack = Convert.ToInt32(parts[3]);
-            int toStack = Convert.ToInt32(parts[5]);
             for (int y=0; y<count;y++)
             {
                 swap.Push(stacks[fromStack].Pop());
