@@ -7,6 +7,7 @@ namespace AoC2022;
 class Day6 : Puzzle
 {
     [TestCase("bvwbjplbgvbhsrlpgdmjqwftvncz", ExpectedResult = 5)]
+    [TestCase("nppdvjthqldpwncqszvftbrmjlhg", ExpectedResult = 6)]
     public static int FirstMarker(string s)
     {
         for (int x=4; x<s.Length; x++)
@@ -16,6 +17,7 @@ class Day6 : Puzzle
         return -1;
     }
     [TestCase("mjqjpqmgbljsphdztnvjfqwrcgsmlb", ExpectedResult = 19)]
+    [TestCase("bvwbjplbgvbhsrlpgdmjqwftvncz", ExpectedResult = 23)]
     public static int SecondMarker(string s)
     {
         for (int x=14; x<s.Length; x++)
