@@ -47,7 +47,9 @@ class Day7 : Puzzle
     public override void Part1()
     {
         ParseFilesizes();
-        var result = Directories.Select( dir => FileSizes.Where(kv => kv.Key.StartsWith(dir)).Select(kv => kv.Value).Sum() ).Where(s => s < 100000).Sum();
+        var result = Directories.Select( dir => FileSizes.Where(kv => kv.Key.StartsWith(dir)).Select(kv => kv.Value).Sum() )
+            .Where(s => s < 100000)
+            .Sum();
         Console.WriteLine(result);
     }
 
@@ -61,5 +63,6 @@ class Day7 : Puzzle
         var dirs = Directories.Select( dir => FileSizes.Where(kv => kv.Key.StartsWith(dir)).Select(kv => kv.Value).Sum() );
         var smallest = dirs.Where(s => s > needed).Min();
         Console.WriteLine(smallest);
+
     }
 }
