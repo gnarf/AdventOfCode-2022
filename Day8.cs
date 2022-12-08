@@ -43,7 +43,7 @@ class Day8 : Puzzle
                     var h = treeMap[points[z]];
                     if (h > MaxPass[z]) 
                     {
-                        Console.WriteLine($"{z} {points[z]} {h}");
+                        // Console.WriteLine($"{z} {points[z]} {h}");
                         seenTrees.Add(points[z]);
                         MaxPass[z] = h;
                     }
@@ -91,7 +91,7 @@ class Day8 : Puzzle
                 if (nv < h) {  }
                 else break;
             }
-            Console.WriteLine($"{kv.Key} {scores[0]} {scores[1]} {scores[2]} {scores[3]} => {scores[0]*scores[1]*scores[2]*scores[3]}");
+            // Console.WriteLine($"{kv.Key} {scores[0]} {scores[1]} {scores[2]} {scores[3]} => {scores[0]*scores[1]*scores[2]*scores[3]}");
             return scores[0]*scores[1]*scores[2]*scores[3];
         }).Max();
         Console.WriteLine(r);
