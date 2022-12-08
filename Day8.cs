@@ -28,24 +28,23 @@ class Day8 : Puzzle
         var swap = lines.Length - 1;
         for (int x=0; x<lines.Length; x++)
         {
-            int[] MaxPass = new int[4]{-1,-1,-1,-1};
-            for (int y=0; y<lines.Length; y++)
+            foreach (var facing in Point2D.FacingToPointVector.Keys)
             {
-                Point2D[] points = new Point2D[]
+                int max = -1;
+                var step = Point2D.FacingToPointVector[facing];
+                var start = new Point2D
+                (
+                    x: step.x switch { 0 => x, 1 => 0, -1 => swap, _ => 0},
+                    y: step.y switch { 0 => x, 1 => 0, -1 => swap, _ => 0}
+                );
+                for (int y=0; y<lines.Length; y++)
                 {
-                    new Point2D(x, y),
-                    new Point2D(y, x),
-                    new Point2D(x, swap - y),
-                    new Point2D(swap - y, x),
-                };
-                for (int z = 0; z<4; z++)
-                {
-                    var h = treeMap[points[z]];
-                    if (h > MaxPass[z]) 
+                    var treeAt = start + (step * y);
+                    var value = treeMap[treeAt];
+                    if (value > max)
                     {
-                        // Console.WriteLine($"{z} {points[z]} {h}");
-                        seenTrees.Add(points[z]);
-                        MaxPass[z] = h;
+                        seenTrees.Add(treeAt);
+                        max = value;
                     }
                 }
             }
@@ -57,42 +56,19 @@ class Day8 : Puzzle
     {
         var count =  lines.Length;
         var r = treeMap.Select( kv => {
-            var h = kv.Value;
-            int[] scores = new int[] {0, 0, 0, 0};
-            for (int x=kv.Key.x + 1; x<count; x++)
-            {
-                var np = new Point2D(x, kv.Key.y);
-                var nv = treeMap[np];
-                scores[0]++; 
-                if (nv < h) { }
-                else break;
-            }
-            for (int x=kv.Key.x - 1; x>=0; x--)
-            {
-                var np = new Point2D(x, kv.Key.y);
-                var nv = treeMap[np];
-                scores[1]++; 
-                if (nv < h) { }
-                else break;
-            }
-            for (int x=kv.Key.y + 1; x<count; x++)
-            {
-                var np = new Point2D(kv.Key.x, x);
-                var nv = treeMap[np];
-                scores[2]++;
-                if (nv < h) {  }
-                else break;
-            }
-            for (int x=kv.Key.y - 1; x>=0; x--)
-            {
-                var np = new Point2D(kv.Key.x, x);
-                var nv = treeMap[np];
-                scores[3]++;
-                if (nv < h) {  }
-                else break;
-            }
-            // Console.WriteLine($"{kv.Key} {scores[0]} {scores[1]} {scores[2]} {scores[3]} => {scores[0]*scores[1]*scores[2]*scores[3]}");
-            return scores[0]*scores[1]*scores[2]*scores[3];
+            var treeAt = kv.Key;
+            return Point2D.FacingToPointVector.Select( facingKv => {
+                var step = facingKv.Value;
+                var point = treeAt;
+                var height = kv.Value;
+                int score = 0;
+                while (treeMap.TryGetValue(point += step, out var next))
+                {
+                    score++;
+                    if (next >= height) break;
+                }
+                return score;
+            }).Aggregate(1, (a, b) => a * b);
         }).Max();
         Console.WriteLine(r);
     }

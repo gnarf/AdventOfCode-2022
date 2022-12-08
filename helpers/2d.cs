@@ -86,6 +86,16 @@ public class Point2D : IEquatable<Point2D>
 
 
     public static readonly Point2D zero = new Point2D(0, 0);
+
+    public static readonly Dictionary<Facing2D, Point2D> FacingToPointVector = new Dictionary<Facing2D, Point2D>
+    {
+        { Facing2D.Up, new Point2D(0, -1) },
+        { Facing2D.Right, new Point2D(1, 0) },
+        { Facing2D.Down, new Point2D(0, 1) },
+        { Facing2D.Left, new Point2D(-1, 0) },
+    };
+
+    public static Point2D Facing(Facing2D F) => FacingToPointVector[F];
 }
 
 public enum Facing2D
