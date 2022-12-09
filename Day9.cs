@@ -74,40 +74,44 @@ class Day9 : Puzzle
     public void Bonus()
     {
         Console.WriteLine("--- bonus content ---");
-        List<(Point2D pos, HashSet<Point2D> seen)> knots = new()
+        List<(Point2D pos, HashSet<Point2D> seen, int line)> knots = new()
         {
-            (Point2D.Zero, new(){Point2D.Zero})
+            (Point2D.Zero, new(){Point2D.Zero}, 0)
         };
-        void moveKnot(int index, Point2D move)
+        int line = 1;
+        void moveKnot(int index, Point2D move, int inLine)
         {
-            var (pos, seen) = knots[index];
+            var (pos, seen, line) = knots[index];
             pos += move;
             seen.Add(pos);
-            knots[index] = (pos, seen);
+            knots[index] = (pos, seen, line);
             if (index == knots.Count - 1)
             {
-                knots.Add( (Point2D.Zero, new(){Point2D.Zero}) );
+                knots.Add( (Point2D.Zero, new(){Point2D.Zero}, inLine));
             }
             var dist = pos - knots[index + 1].pos;
             if (dist != Point2D.Sign(dist))
             {
-                moveKnot(index + 1, Point2D.Sign(dist));
+                moveKnot(index + 1, Point2D.Sign(dist), inLine);
             }
         }
         foreach (var move in GetMoves())
         {
             for (int x=0; x<move.steps; x++)
             {
-                moveKnot(0, Point2D.FacingToPointVector[move.dir]);
+                moveKnot(0, Point2D.FacingToPointVector[move.dir], line);
             }
+            line++;
         }
 
+        Console.WriteLine("  K seen "+ "seenBar".PadRight(80, ' ') + " ln #");
+        Console.WriteLine("--- ---- " + "".PadLeft(80, '-') + " ----");
         for (int x = 0; x<knots.Count; x++)
         {
             var z = knots[0].seen.Count();
             var c = knots[x].seen.Count();
-            var bar = "".PadLeft((int)((double)c * 80 / (double)z), '#');
-            Console.WriteLine($"{x.ToString().PadLeft(3,' ')} {knots[x].seen.Count().ToString().PadLeft(4,' ')} {bar}");
+            var bar = "".PadLeft((int)Math.Round((double)c * 80 / (double)z), '#').PadRight(80, ' ');
+            Console.WriteLine($"{x.ToString().PadLeft(3,' ')} {knots[x].seen.Count().ToString().PadLeft(4,' ')} {bar} {knots[x].line.ToString().PadLeft(4, ' ')} ");
         }
 
     }
