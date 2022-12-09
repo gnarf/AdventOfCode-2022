@@ -41,7 +41,7 @@ class Day9 : Puzzle
     public override void Part2()
     {
         Point2D[] knots = Enumerable.Repeat(new Point2D(0, 0), 10).ToArray();
-        HashSet<Point2D> tailVisit = new HashSet<Point2D>{Point2D.zero};
+        HashSet<Point2D> tailVisit = new HashSet<Point2D>{Point2D.Zero};
 
         void moveKnot(int index, Point2D move)
         {
@@ -76,7 +76,7 @@ class Day9 : Puzzle
         Console.WriteLine("--- bonus content ---");
         List<(Point2D pos, HashSet<Point2D> seen)> knots = new()
         {
-            (Point2D.zero, new(){Point2D.zero})
+            (Point2D.Zero, new(){Point2D.Zero})
         };
         void moveKnot(int index, Point2D move)
         {
@@ -86,7 +86,7 @@ class Day9 : Puzzle
             knots[index] = (pos, seen);
             if (index == knots.Count - 1)
             {
-                knots.Add( (Point2D.zero, new(){Point2D.zero}) );
+                knots.Add( (Point2D.Zero, new(){Point2D.Zero}) );
             }
             var dist = pos - knots[index + 1].pos;
             if (dist != Point2D.Sign(dist))

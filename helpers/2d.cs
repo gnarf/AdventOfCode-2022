@@ -75,7 +75,7 @@ public class Point2D : IEquatable<Point2D>
 
     public int Manhattan(Point2D? other = null)
     {
-        other ??= zero;
+        other ??= Zero;
         return Math.Abs(x - other.x) + Math.Abs(y - other.y);
     }
 
@@ -85,21 +85,49 @@ public class Point2D : IEquatable<Point2D>
     }
 
 
-    public static readonly Point2D zero = new Point2D(0, 0);
+    public static readonly Point2D Zero = new Point2D(0, 0);
+    public static readonly Point2D Up = new Point2D(0, -1);
+    public static readonly Point2D Down = new Point2D(0, 1);
+    public static readonly Point2D Left = new Point2D(-1, 0);
+    public static readonly Point2D Right = new Point2D(1, 0);
+
 
     public static readonly Dictionary<Facing2D, Point2D> FacingToPointVector = new Dictionary<Facing2D, Point2D>
     {
-        { Facing2D.Up, new Point2D(0, -1) },
-        { Facing2D.Right, new Point2D(1, 0) },
-        { Facing2D.Down, new Point2D(0, 1) },
-        { Facing2D.Left, new Point2D(-1, 0) },
+        { Facing2D.Up, Up },
+        { Facing2D.Right, Right },
+        { Facing2D.Down, Down },
+        { Facing2D.Left, Left },
     };
 
     public static Point2D Facing(Facing2D F) => FacingToPointVector[F];
+
+    public Point2D Turn(Turn2D turn)
+    {
+        return turn switch
+        {
+            Turn2D.Left => new Point2D(this.y, this.x * -1),
+            Turn2D.Right => new Point2D(this.y * -1, this.x * 1),
+            Turn2D.Around => new Point2D(this.x * -1, this.y * -1),
+            _ => this,
+        };
+    }
 }
 
 public enum Facing2D
 {
     Up, Right, Down, Left
+};
+
+public enum Turn2D
+{
+    Forward = 0,
+    None = 0,
+    Left = 1,
+    CounterClockwise = 1,
+    Right = 2,
+    Clockwise = 2,
+    Around = 3,
+    OneEighty = 3
 };
 
