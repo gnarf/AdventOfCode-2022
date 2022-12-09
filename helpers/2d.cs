@@ -72,6 +72,7 @@ public class Point2D : IEquatable<Point2D>
     {
         return new Point2D(Math.Sign(a.x), Math.Sign(a.y));
     }
+    public Point2D Sign() => Point2D.Sign(this);
 
     public int Manhattan(Point2D? other = null)
     {
