@@ -40,34 +40,31 @@ class Day9 : Puzzle
 
     public override void Part2()
     {
-        Point2D[] heads = Enumerable.Repeat(new Point2D(0, 0), 9).ToArray();
-        Point2D[] tails = Enumerable.Repeat(new Point2D(0, 0), 9).ToArray();
+        Point2D[] knots = Enumerable.Repeat(new Point2D(0, 0), 10).ToArray();
         HashSet<Point2D> tailVisit = new HashSet<Point2D>{Point2D.zero};
 
-        void moveHead(int index, Point2D move)
+        void moveKnot(int index, Point2D move)
         {
-            heads[index] += move;
-            var dist = heads[index] - tails[index];
-            if (dist != Point2D.Sign(dist))
+            knots[index] += move;
+            if (index == knots.Length - 1)
             {
-                tails[index] += Point2D.Sign(dist);
-                if (index < heads.Length - 1)
+                tailVisit.Add(knots[index]);
+            }
+            else
+            {
+                var dist = knots[index] - knots[index + 1];
+                if (dist != Point2D.Sign(dist))
                 {
-                    moveHead(index + 1, Point2D.Sign(dist));
-                }
-                else
-                {
-                    tailVisit.Add(tails[index]);
+                    moveKnot(index + 1, Point2D.Sign(dist));
                 }
             }
-
         }
 
         foreach (var move in GetMoves())
         {
             for (int x=0; x<move.steps; x++)
             {
-                moveHead(0, Point2D.FacingToPointVector[move.dir]);
+                moveKnot(0, Point2D.FacingToPointVector[move.dir]);
             }
         }
         Console.WriteLine(tailVisit.Count);
