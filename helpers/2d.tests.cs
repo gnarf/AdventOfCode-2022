@@ -14,7 +14,7 @@ public static class Point2DTests
         new object[] { Point2D.Right, Turn2D.Left, Point2D.Up },
         new object[] { Point2D.Right, Turn2D.Right, Point2D.Down },
         new object[] { Point2D.Right, Turn2D.Around, Point2D.Left },
-        new object[] { new Point2D(10,20), Turn2D.Right, new Point2D(-20, 10)},
+        new object[] { new Point2D(10,20), Turn2D.Right, new Point2D(-20, 10) },
     };
 
     [TestCaseSource(nameof(TestTurnValues))]
