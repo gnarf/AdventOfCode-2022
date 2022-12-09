@@ -69,4 +69,46 @@ class Day9 : Puzzle
         }
         Console.WriteLine(tailVisit.Count);
     }
+
+    /// What does the distribution of knot length look like?
+    public void Bonus()
+    {
+        Console.WriteLine("--- bonus content ---");
+        List<(Point2D pos, HashSet<Point2D> seen)> knots = new()
+        {
+            (Point2D.zero, new())
+        };
+        void moveKnot(int index, Point2D move)
+        {
+            var (pos, seen) = knots[index];
+            pos += move;
+            seen.Add(pos);
+            knots[index] = (pos, seen);
+            if (index == knots.Count - 1)
+            {
+                knots.Add( (Point2D.zero, new()) );
+            }
+            var dist = pos - knots[index + 1].pos;
+            if (dist != Point2D.Sign(dist))
+            {
+                moveKnot(index + 1, Point2D.Sign(dist));
+            }
+        }
+        foreach (var move in GetMoves())
+        {
+            for (int x=0; x<move.steps; x++)
+            {
+                moveKnot(0, Point2D.FacingToPointVector[move.dir]);
+            }
+        }
+
+        for (int x = 0; x<knots.Count; x++)
+        {
+            var z = knots[0].seen.Count();
+            var c = knots[x].seen.Count();
+            var bar = "".PadLeft((int)((double)c * 80 / (double)z), '#');
+            Console.WriteLine($"{x.ToString().PadLeft(3,' ')} {knots[x].seen.Count().ToString().PadLeft(4,' ')} {bar}");
+        }
+
+    }
 }
