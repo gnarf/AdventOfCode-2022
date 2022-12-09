@@ -76,7 +76,7 @@ class Day9 : Puzzle
         Console.WriteLine("--- bonus content ---");
         List<(Point2D pos, HashSet<Point2D> seen)> knots = new()
         {
-            (Point2D.zero, new())
+            (Point2D.zero, new(){Point2D.zero})
         };
         void moveKnot(int index, Point2D move)
         {
@@ -86,7 +86,7 @@ class Day9 : Puzzle
             knots[index] = (pos, seen);
             if (index == knots.Count - 1)
             {
-                knots.Add( (Point2D.zero, new()) );
+                knots.Add( (Point2D.zero, new(){Point2D.zero}) );
             }
             var dist = pos - knots[index + 1].pos;
             if (dist != Point2D.Sign(dist))
