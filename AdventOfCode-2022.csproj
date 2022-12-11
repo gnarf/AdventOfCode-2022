@@ -6,6 +6,7 @@
     <RootNamespace>AdventOfCode_2022</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>11.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,3 +16,4 @@
   </ItemGroup>
 
 </Project>
+
