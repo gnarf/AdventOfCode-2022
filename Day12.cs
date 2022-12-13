@@ -37,6 +37,7 @@ class Day12 : Puzzle
             toVisit.RemoveAt(0);
             if (visitCost.ContainsKey(point)) continue;
             visitCost.Add(point, cost);
+            if (point == goal) break;
             foreach (var direction in Point2D.FacingToPointVector.Values)
             {
                 if (visitCost.ContainsKey(point + direction) || toVisit.Any(p => p.point == point + direction && p.cost <= cost + 1)) continue;
@@ -44,13 +45,19 @@ class Day12 : Puzzle
                 {
                     if (newheight <= height + 1)
                     {
-                        toVisit.Add((point + direction, cost + 1, newheight));
+                        var index = toVisit.FindIndex( t => t.cost > cost && t.height < newheight);
+                        if (index != -1)
+                        {
+                            toVisit.Insert(index, (point + direction, cost + 1, newheight));
+                        }
+                        else
+                        {
+                            toVisit.Add((point + direction, cost + 1, newheight));
+                        }
                     }
                 }
             }
-            toVisit.Sort( (a, b) => a.cost - b.cost );
         }
-
         Console.WriteLine(visitCost[goal]);
 
     }
@@ -67,6 +74,7 @@ class Day12 : Puzzle
             toVisit.RemoveAt(0);
             if (visitCost.ContainsKey(point)) continue;
             visitCost.Add(point, cost);
+            if (height == 0) break;
             foreach (var direction in Point2D.FacingToPointVector.Values)
             {
                 if (visitCost.ContainsKey(point + direction) || toVisit.Any(p => p.point == point + direction && p.cost <= cost + 1)) continue;
@@ -74,13 +82,19 @@ class Day12 : Puzzle
                 {
                     if (newheight + 1 >= height)
                     {
-                        toVisit.Add((point + direction, cost + 1, newheight));
+                        var index = toVisit.FindIndex( t => t.cost > cost );
+                        if (index != -1)
+                        {
+                            toVisit.Insert(index, (point + direction, cost + 1, newheight));
+                        }
+                        else
+                        {
+                            toVisit.Add((point + direction, cost + 1, newheight));
+                        }
                     }
                 }
             }
-            toVisit.Sort( (a, b) => a.cost - b.cost );
         }
-
         Console.WriteLine(visitCost.Where(k => heightMap[k.Key] == 0).Min(s => s.Value));
     }
 }
