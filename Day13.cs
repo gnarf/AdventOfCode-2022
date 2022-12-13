@@ -24,9 +24,11 @@ class Day13 : Puzzle
         }
 
         public PairListValue? this[int i] => List != null && i < List.Count ? List[i] : null;
+        public PairListValue? ItemAt(int i) => this[i];
 
-        public void Add(PairListValue value)
+        public void Add(PairListValue? value)
         {
+            if (value == null) throw new Exception("null value add");
             this.List?.Add(value);
         }
 
@@ -46,13 +48,22 @@ class Day13 : Puzzle
         public int CompareTo(PairListValue? other)
         {
             if (other == null) throw new Exception("compare to null");
-            if (isValue && other.isValue) return v - other.v;
+            return CompareToNotNull(other);
+        }
+
+        public int CompareToNotNull(PairListValue other)
+        {
+            if (isValue && other.isValue)
+            {
+                return v - other.v;
+            }
             if (!isValue && !other.isValue)
             {
+                if (List == null) throw new Exception("null guard List");
                 for (int x=0; x<Length; x++)
                 {
                     if (x >= other.Length) return 1;
-                    var compare = this[x].CompareTo(other[x]);
+                    var compare = List[x].CompareTo(other[x]);
                     if (compare != 0) return compare;
                 }
                 if (other.Length > Length) return -1;
@@ -126,8 +137,8 @@ class Day13 : Puzzle
             }
             if (x%3 == 1 && parsingPair != null && parsingPair.Length == 2)
             {
-                LineValues.Add(parsingPair[0]);
-                LineValues.Add(parsingPair[1]);
+                LineValues.Add(parsingPair?.ItemAt(0) ?? throw new Exception("no left?"));
+                LineValues.Add(parsingPair?.ItemAt(1) ?? throw new Exception("no right?"));
             }
             Console.WriteLine($"{lines[x]} -> {parsingPair}");
         }
@@ -141,6 +152,7 @@ class Day13 : Puzzle
             var pair = Pairs[x];
             var left = pair[0];
             var right = pair[1];
+            if (left == null || right == null) throw new Exception("left right null guard");
             var ok = left.CompareTo(right) <= 0;
             if (ok) sum += x+1;
             Console.WriteLine($"{x+1}: {ok} {left} {right} {left.CompareTo(right)}");
@@ -151,12 +163,12 @@ class Day13 : Puzzle
 
     public override void Part2()
     {
-        var divider1 = new PairListValue();
+        PairListValue divider1 = new PairListValue();
         divider1.Add(new PairListValue());
-        divider1[0].Add(new PairListValue(2));
-        var divider2 = new PairListValue();
+        divider1.ItemAt(0)?.Add(new PairListValue(2));
+        PairListValue divider2 = new PairListValue();
         divider2.Add(new PairListValue());
-        divider2[0].Add(new PairListValue(6));
+        divider2.ItemAt(0)?.Add(new PairListValue(6));
 
         LineValues.Add(divider1);
         LineValues.Add(divider2);
