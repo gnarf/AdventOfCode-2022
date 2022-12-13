@@ -6,6 +6,12 @@ namespace AoC2022;
 
 class Day0 : Puzzle
 {
+
+    // public override void Parse(string filename)
+    // {
+    //     base.Parse(filename);
+    // }
+
     // public override void Part1()
     // {
         // foreach (var line in lines)
