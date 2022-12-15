@@ -20,7 +20,7 @@ class Day14 : Puzzle
         puzzleState.Clear();
         foreach( var line in lines)
         {
-            var coords = line.Split(new char[]{' ', '-', '>', ','}, StringSplitOptions.RemoveEmptyEntries);            Point2D? lastPoint = null;
+            var coords = line.Split(new char[]{' ', '-', '>', ','}, StringSplitOptions.RemoveEmptyEntries);
             for (int c=2; c<coords.Length; c+=2)
             {
                 var prevCood = new Point2D(int.Parse(coords[c-2]), int.Parse(coords[c-1]));
@@ -35,7 +35,7 @@ class Day14 : Puzzle
         }
     }
 
-    public Point2D[] FallingOrder = new Point2D[] { Point2D.Down, Point2D.Down + Point2D.Left, Point2D.Down + Point2D.Right};
+    public List<Point2D> FallingOrder = new() { Point2D.Down, Point2D.Down + Point2D.Left, Point2D.Down + Point2D.Right};
 
     public int rested = 0;
 
@@ -46,21 +46,21 @@ class Day14 : Puzzle
         while (true)
         {
             var falling = new Point2D(500,0);
-            Point2D fall;
             try
             {
-                while ((fall = FallingOrder.First(d => GetState(falling + d) == State.Empty)) != Point2D.Zero)
+                int index = -1;
+                while ((index = FallingOrder.FindIndex(d => GetState(falling + d) == State.Empty)) != -1)
                 {
-                    falling += fall;
+                    falling += FallingOrder[index];
                     // Console.WriteLine("Falls to "+falling);
                     if (falling.y >= puzzleBottom) break;
                 }
             }
-            catch (InvalidOperationException e) {} // expected
+            catch (InvalidOperationException) {} // expected
             if (falling.y >= puzzleBottom) break;
             rested++;
             puzzleState[falling] = State.Sand;
-            Console.WriteLine("Stopped falling at" + falling);
+            // Console.WriteLine("Stopped falling at" + falling);
         }
 
         Console.WriteLine("Rested "+rested);
@@ -75,22 +75,22 @@ class Day14 : Puzzle
         {
             var falling = new Point2D(500,0);
             if (GetState(falling) == State.Sand) break;
-            Point2D fall;
             try
             {
-                while ((fall = FallingOrder.First(d => GetState(falling + d) == State.Empty)) != Point2D.Zero)
+                int index = -1;
+                while ((index = FallingOrder.FindIndex(d => GetState(falling + d) == State.Empty)) != -1)
                 {
                     // cant fall to puzzlebottom
                     if (falling.y == puzzleBottom - 1) break;
-                    falling += fall;
+                    falling += FallingOrder[index];
                     // Console.WriteLine("Falls to "+falling);
                     if (falling.y >= puzzleBottom) break;
                 }
             }
-            catch (InvalidOperationException e) {} // expected
+            catch (InvalidOperationException) {} // expected
             rested++;
             puzzleState[falling] = State.Sand;
-            Console.WriteLine("Stopped falling at" + falling);
+            // Console.WriteLine("Stopped falling at" + falling);
         }
 
         Console.WriteLine("Rested "+rested);

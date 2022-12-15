@@ -1,6 +1,7 @@
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
  14   08:58:32  18613      0   09:01:49  17223      0 (started at 8:38 sadly - this would have been a good time)
+(14a  00:20:32  ?????      0   00:23:49  ?????      0)(adjusted day 14 time)
  13   00:48:54   3440      0   00:55:01   2915      0
  12   00:21:55   1216      0   00:26:51   1250      0
  11   00:29:10   1578      0   00:37:47   1108      0
