@@ -1,5 +1,6 @@
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 16   01:16:59    945      0   05:37:52   2210      0 (hardest AoC ever??? what a doosy)
  15   00:17:18    428      0   01:30:46   2377      0
  14   08:58:32  18613      0   09:01:49  17223      0 (started at 8:38 sadly - this would have been a good time)
 (14a  00:20:32  ?????      0   00:23:49  ?????      0)(adjusted day 14 time)
