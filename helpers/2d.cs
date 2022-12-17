@@ -1,11 +1,13 @@
+using System.Drawing;
+
 namespace AoC2022;
 
 public class Point2D : IEquatable<Point2D>
 {
-    public int x { get; init; }
-    public int y { get; init; }
+    public long x { get; init; }
+    public long y { get; init; }
 
-    public Point2D(int x, int y)
+    public Point2D(long x, long y)
     {
         this.x = x;
         this.y = y;
@@ -50,11 +52,11 @@ public class Point2D : IEquatable<Point2D>
         return new Point2D(a.x + b.x, a.y + b.y);
     }
 
-    public static Point2D operator *(Point2D a, int b)
+    public static Point2D operator *(Point2D a, long b)
     {
         return new Point2D(a.x * b, a.y * b);
     }
-    public static Point2D operator *(int b, Point2D a)
+    public static Point2D operator *(long b, Point2D a)
     {
         return new Point2D(a.x * b, a.y * b);
     }
@@ -74,7 +76,7 @@ public class Point2D : IEquatable<Point2D>
     }
     public Point2D Sign() => Point2D.Sign(this);
 
-    public int Manhattan(Point2D? other = null)
+    public long Manhattan(Point2D? other = null)
     {
         other ??= Zero;
         return Math.Abs(x - other.x) + Math.Abs(y - other.y);
@@ -112,6 +114,23 @@ public class Point2D : IEquatable<Point2D>
             Turn2D.Around => new Point2D(this.x * -1, this.y * -1),
             _ => this,
         };
+    }
+
+    public static void PrintGrid(Point2D min, Point2D max, Func<Point2D, char> charToPrint)
+    {
+        for (long y=min.y; y<=max.y; y++)
+        {
+            string linebuffer = "";
+            for (long x=min.x; x<=max.x; x++)
+            {
+                linebuffer += charToPrint(new Point2D(x, y));
+            }
+            Console.WriteLine(linebuffer);
+        }
+    }
+    public static void PrintGrid(IEnumerable<Point2D> points, Func<Point2D, char> charToPrint)
+    {
+        PrintGrid(points.Aggregate(Point2D.Min), points.Aggregate(Point2D.Max), charToPrint);
     }
 }
 

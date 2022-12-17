@@ -41,7 +41,7 @@ class Day14 : Puzzle
 
     public override void Part1()
     {
-        int puzzleBottom = puzzleState.Keys.Aggregate(Point2D.Max).y + 1;
+        long puzzleBottom = puzzleState.Keys.Aggregate(Point2D.Max).y + 1;
 
         while (true)
         {
@@ -69,7 +69,7 @@ class Day14 : Puzzle
     public override void Part2()
     {
 
-        int puzzleBottom = puzzleState.Keys.Aggregate(Point2D.Max).y + 2;
+        long puzzleBottom = puzzleState.Keys.Aggregate(Point2D.Max).y + 2;
 
         while (true)
         {

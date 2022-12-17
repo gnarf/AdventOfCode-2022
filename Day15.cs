@@ -23,16 +23,16 @@ class Day15 : Puzzle
             var sensor = new Point2D(parts[0], parts[1]);
             var beacon = new Point2D(parts[2], parts[3]);
             knownBeacons.Add(beacon);
-            sensorReadings.Add(sensor, (beacon - sensor).Manhattan());
+            sensorReadings.Add(sensor, (int)(beacon - sensor).Manhattan());
         }
     }
 
     public override void Part1()
     {
-        int min = sensorReadings.Keys.Aggregate(Point2D.Min).x - sensorReadings.Values.Max();
-        int max = sensorReadings.Keys.Aggregate(Point2D.Max).x + sensorReadings.Values.Max();
+        long min = sensorReadings.Keys.Aggregate(Point2D.Min).x - sensorReadings.Values.Max();
+        long max = sensorReadings.Keys.Aggregate(Point2D.Max).x + sensorReadings.Values.Max();
         int count = 0;
-        for (int x=min; x<=max; x++)
+        for (long x=min; x<=max; x++)
         {
             var p = new Point2D(x, 2000000);
             if (knownBeacons.Contains(p))
@@ -122,7 +122,7 @@ x>9
 
         for (int x=0; x<=searchSpace; x++)
         {
-            List<(int left, int right)> ranges = sensorReadings
+            List<(long left, long right)> ranges = sensorReadings
             .Where( r => Math.Abs(r.Key.x - x) <= r.Value )
             .Select(r => {
                 var dx = Math.Abs(r.Key.x - x);
@@ -148,7 +148,7 @@ x>9
                         return;
                     }
                 }
-                rightMost = Math.Max(right, rightMost);
+                rightMost = (int)Math.Max(right, rightMost);
             }
         }
     }
