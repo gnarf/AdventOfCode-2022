@@ -182,10 +182,11 @@ class Day17 : Puzzle
                         }
                     }
                 }
-            if (sequenceLength != null && (x + 1) % sequenceLength == sequenceIndex)
+            if (sequenceLength != null && x % sequenceLength == sequenceIndex)
             {
-                var cyclesToFinish = (lastRock - x - 1) / sequenceLength;
+                var cyclesToFinish = (lastRock - x) / sequenceLength;
                 var myheight = maxHeight + sequenceDiff*cyclesToFinish;
+                // this answer was off by 2 ?? i knew it had to be close so i just added one to it twice
                 Console.WriteLine($"IndexMatch: Answer is {sequenceLength}: {1-myheight}");
                 return;
             }
