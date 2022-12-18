@@ -51,6 +51,10 @@ public class Point3D : IEquatable<Point3D>
     {
         return new Point3D(Math.Sign(a.x), Math.Sign(a.y), Math.Sign(a.z));
     }
+    public static Point3D Abs(Point3D a)
+    {
+        return new Point3D(Math.Abs(a.x), Math.Abs(a.y), Math.Abs(a.z));
+    }
 
     public static Point3D Min(Point3D a, Point3D b)
     {
@@ -64,7 +68,7 @@ public class Point3D : IEquatable<Point3D>
 
     public int Manhattan(Point3D? other = null)
     {
-        other ??= zero;
+        other ??= Zero;
         return Math.Abs(x - other.x) + Math.Abs(y - other.y) + Math.Abs(z - other.z);
     }
 
@@ -74,5 +78,26 @@ public class Point3D : IEquatable<Point3D>
     }
 
 
-    public static readonly Point3D zero = new Point3D(0, 0, 0);
-}
+    public static readonly Point3D Zero = new Point3D(0, 0, 0);
+    public static readonly Point3D Up = new Point3D(0, 0, -1);
+    public static readonly Point3D Down = new Point3D(0, 0, 1);
+    public static readonly Point3D Left = new Point3D(-1, 0, 0);
+    public static readonly Point3D Right = new Point3D(1, 0, 0);
+    public static readonly Point3D Forward = new Point3D(0, -1, 0);
+    public static readonly Point3D Backward = new Point3D(0, 1, 0);
+
+
+    public static readonly Dictionary<Facing3D, Point3D> FacingToPointVector = new Dictionary<Facing3D, Point3D>
+    {
+        { Facing3D.Up, Up },
+        { Facing3D.Right, Right },
+        { Facing3D.Down, Down },
+        { Facing3D.Left, Left },
+        { Facing3D.Forward, Forward },
+        { Facing3D.Backward, Backward },
+    };}
+
+public enum Facing3D
+{
+    Up, Right, Down, Left, Forward, Backward
+};
