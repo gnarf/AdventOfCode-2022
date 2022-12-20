@@ -18,6 +18,8 @@ class Day20 : Puzzle
 
     public override void Part1()
     {
+        // Working list stores an index into initial...
+        // a value of 1 in this list corresponds to the value at initial[1], etc
         List<int> working = Enumerable.Range(0, initial.Count).ToList();
 
         int val(int index) => initial[working[index % initial.Count]];
