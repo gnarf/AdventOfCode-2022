@@ -8,86 +8,63 @@ namespace AoC2022;
 
 class Day20 : Puzzle
 {
-
-    public class Entry
-    {
-        public int originalPosition;
-        public long value;
-    }
-
-    public List<Entry> initial = new();
+    public List<int> initial = new();
 
     public override void Parse(string filename)
     {
         base.Parse(filename);
-        int index = 0;
-        foreach (var line in lines)
-        {
-            initial.Add(
-                new Entry{originalPosition = index++, value = long.Parse(line)}
-            );
-        }
+        initial = lines.Select(l => int.Parse(l)).ToList();
     }
 
     public override void Part1()
     {
-        List<Entry> working = new(initial);
+        List<int> working = Enumerable.Range(0, initial.Count).ToList();
+
+        int val(int index) => initial[working[index % initial.Count]];
 
         // loop inital to get ordering.
-        foreach (var entry in initial)
+        for (int i = 0; i<initial.Count; i++)
         {
-            var index = working.IndexOf(entry);
-            var moveTo = ( index + (int)entry.value ) % (working.Count - 1);
+            var index = working.IndexOf(i);
+            var moveTo = ( index + val(index) ) % (working.Count - 1);
             if (moveTo <= 0) moveTo = working.Count + moveTo - 1;
-            Console.WriteLine($"{entry.originalPosition}: Moving {entry.value} from {index} to {moveTo}");
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+b.value+", "));
-            working.Insert(moveTo + (moveTo > index ? 1 : 0), entry);
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+b.value+", "));
+            Console.WriteLine($"{i}: Moving {val(i)} from {index} to {moveTo}");
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            working.Insert(moveTo + (moveTo > index ? 1 : 0), i);
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
             working.RemoveAt(index + (moveTo < index ? 1 : 0));
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+b.value+", "));
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
         }
 
-        var offset = working.FindIndex(p => p.value == 0);
+        var offset = working.IndexOf(initial.IndexOf(0));
 
-        var result = working[(offset + 1000) % working.Count].value +
-            working[(offset + 2000) % working.Count].value +
-            working[(offset + 3000) % working.Count].value;
-
-        Console.WriteLine( result );
+        var result = val(offset + 1000) + val(offset + 2000) + val(offset + 3000);
+        Console.WriteLine( $"{result}" );
     }
 
     public override void Part2()
     {
-        List<Entry> working = new(initial);
+        List<int> working = Enumerable.Range(0, initial.Count).ToList();
 
-        var decrypt = 811589153;
+        long val(int index) => initial[working[index % initial.Count]] * 811589153L;
 
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+(b.value*decrypt)+", "));
-        for (int x=0; x<10;x++)
+        // loop inital to get ordering.
+        for (int x = 0; x<10; x++) for (int i = 0; i<initial.Count; i++)
         {
-            // loop inital to get ordering.
-            foreach (var entry in initial)
-            {
-                var index = working.IndexOf(entry);
-                var moveMod = (entry.value * decrypt) % (working.Count - 1);
-                var moveTo = ( index + (int)(moveMod) ) % (working.Count - 1);
-                while (moveTo <= 0) moveTo = working.Count + moveTo - 1;
-                Console.WriteLine($"{x}.{entry.originalPosition}: Moving {entry.value*decrypt} {moveMod} from {index} to {moveTo}");
-                // Console.WriteLine(working.Aggregate("", (a, b) => a+(b.value*decrypt)+", "));
-                working.Insert(moveTo + (moveTo > index ? 1 : 0), entry);
-                // Console.WriteLine(working.Aggregate("", (a, b) => a+(b.value*decrypt)+", "));
-                working.RemoveAt(index + (moveTo < index ? 1 : 0));
-                // Console.WriteLine(working.Aggregate("", (a, b) => a+(b.value*decrypt)+", "));
-            }
-            Console.WriteLine(working.Aggregate("", (a, b) => a+(b.value*decrypt)+", "));
+            var index = working.IndexOf(i);
+            var moveTo = (int)(( index + val(index) ) % (working.Count - 1));
+            if (moveTo <= 0) moveTo = working.Count + moveTo - 1;
+            // Console.WriteLine($"{i}: Moving {val(i)} from {index} to {moveTo}");
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            working.Insert(moveTo + (moveTo > index ? 1 : 0), i);
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            working.RemoveAt(index + (moveTo < index ? 1 : 0));
+            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
         }
 
-        var offset = working.FindIndex(p => p.value == 0);
+        var offset = working.IndexOf(initial.IndexOf(0));
 
-        var result = working[(offset + 1000) % working.Count].value +
-            working[(offset + 2000) % working.Count].value +
-            working[(offset + 3000) % working.Count].value;
-
-        Console.WriteLine( result * decrypt );
+        var result = val(offset + 1000) + val(offset + 2000) + val(offset + 3000);
+        Console.WriteLine( $"{result}" );
     }
 }
