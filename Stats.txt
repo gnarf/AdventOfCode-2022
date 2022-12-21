@@ -1,5 +1,6 @@
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 21   00:11:02    909      0   00:27:55    468      0
  20   00:24:38    295      0   00:45:59    768      0
  19   03:53:02   2314      0   04:07:01   1789      0 (wow this was a pain, i barely finished)
  18   05:59:46  10178      0   06:45:56   7412      0 (started ~5 hrs late)
