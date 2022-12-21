@@ -93,7 +93,7 @@ class Day21 : Puzzle
 
         while (humanSide.name != "humn")
         {
-            Console.WriteLine($"{humanSide.name}: {humanSide.other1} {humanSide.op} {humanSide.other2}");
+            // Console.WriteLine($"{humanSide.name}: {humanSide.other1} {humanSide.op} {humanSide.other2}");
 
             var nextHumanSide = MonkeysByName[humanSide.other1].usesHuman() ? humanSide.other1 : humanSide.other2;
             var nextMonkeySide = MonkeysByName[humanSide.other1].usesHuman() ? humanSide.other2 : humanSide.other1;
@@ -103,11 +103,13 @@ class Day21 : Puzzle
             if (humanSide.op == "*")
             {
                 resultReversed /= otherSide;
+                Console.WriteLine($"{humanSide.name}: {otherSide} * {nextHumanSide} -> humanSide expected {resultReversed}");
             }
             else
             if (humanSide.op == "+")
             {
                 resultReversed -= otherSide;
+                Console.WriteLine($"{humanSide.name}: {otherSide} + {nextHumanSide} -> humanSide expected {resultReversed}");
             }
             else
             if (humanSide.op == "/")
@@ -116,6 +118,7 @@ class Day21 : Puzzle
                 {
                     // human left side of /
                     resultReversed *= otherSide;
+                    Console.WriteLine($"{humanSide.name}: {nextHumanSide} / {otherSide} -> humanSide expected {resultReversed}");
                 } else {
                     throw new Exception();
                 }
@@ -127,10 +130,12 @@ class Day21 : Puzzle
                 {
                     // human left side of -
                     resultReversed += otherSide;
+                    Console.WriteLine($"{humanSide.name}: {nextHumanSide} - {otherSide} -> humanSide expected {resultReversed}");
                 } else {
                     // result == const - human
                     // human == const - result;
                     resultReversed = otherSide - resultReversed;
+                    Console.WriteLine($"{humanSide.name}: {otherSide} - {nextHumanSide} -> humanSide expected {resultReversed}");
                 }
             }
             else
