@@ -29,13 +29,13 @@ class Day20 : Puzzle
         {
             var index = working.IndexOf(i);
             var moveTo = ( index + val(index) ) % (working.Count - 1);
-            if (moveTo <= 0) moveTo = working.Count + moveTo - 1;
-            Console.WriteLine($"{i}: Moving {val(i)} from {index} to {moveTo}");
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            if (moveTo <= 0) moveTo = working.Count - 1 + moveTo;
+            Console.WriteLine($"{i}: Moving {val(index)} from {index} to {moveTo}");
+            // Console.WriteLine(Enumerable.Range(0, working.Count).Aggregate("", (a, b) => a+val(b)+", "));
             working.Insert(moveTo + (moveTo > index ? 1 : 0), i);
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            // Console.WriteLine(Enumerable.Range(0, working.Count).Aggregate("", (a, b) => a+val(b)+", "));
             working.RemoveAt(index + (moveTo < index ? 1 : 0));
-            // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
+            Console.WriteLine(Enumerable.Range(0, working.Count).Aggregate("", (a, b) => a+val(b)+", "));
         }
 
         var offset = working.IndexOf(initial.IndexOf(0));
@@ -50,11 +50,15 @@ class Day20 : Puzzle
 
         long val(int index) => initial[working[index % initial.Count]] * 811589153L;
 
+        var modMod = 811589153L % (working.Count-1);
+
+        long val2(int index) => initial[working[index % initial.Count]] * modMod;
+
         // loop inital to get ordering.
         for (int x = 0; x<10; x++) for (int i = 0; i<initial.Count; i++)
         {
             var index = working.IndexOf(i);
-            var moveTo = (int)(( index + val(index) ) % (working.Count - 1));
+            var moveTo = (int)(( index + val2(index) ) % (working.Count - 1));
             if (moveTo <= 0) moveTo = working.Count + moveTo - 1;
             // Console.WriteLine($"{i}: Moving {val(i)} from {index} to {moveTo}");
             // Console.WriteLine(working.Aggregate("", (a, b) => a+val(b)+", "));
