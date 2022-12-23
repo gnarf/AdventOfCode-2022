@@ -132,6 +132,14 @@ public class Point2D : IEquatable<Point2D>
     {
         PrintGrid(points.Aggregate(Point2D.Min), points.Aggregate(Point2D.Max), charToPrint);
     }
+
+    public static class Point2DCarinals
+    {
+        public static Point2D North = Point2D.Up;
+        public static Point2D South = Point2D.Down;
+        public static Point2D West = Point2D.Left;
+        public static Point2D East = Point2D.Right;
+    }
 }
 
 public enum Facing2D
