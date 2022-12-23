@@ -111,6 +111,10 @@ class Day23 : Puzzle
         bool sawElf = true;
         int loop = 0;
         Dictionary<Point2D, Point2D> proposedMoves = new();
+        List<Point2D> eightLooksClockwise = new()
+        {
+            North + West, North, North + East, East, South + East, South, South + West, West
+        };
         while (sawElf)
         {
             // first half of round elves propose a move:
@@ -119,8 +123,8 @@ class Day23 : Puzzle
             foreach (var elf in elves)
             {
                 // Console.Write(elf);
-                var saw = elves.Where(e2 => Point2D.Sign(e2-elf) == e2 - elf).ToHashSet();
-                if (saw.Count == 1)
+                var saw = eightLooksClockwise.Select(l => elves.Contains(elf + l)).ToArray();
+                if (!saw.Any(v=>v))
                 {
                     // Console.WriteLine(" chillin'");
 
@@ -130,25 +134,25 @@ class Day23 : Puzzle
                     sawElf = true;
                     foreach(int test in testFour(loop))
                     {
-                        if (test == 0 && !(saw.Contains(elf + North) || saw.Contains(elf + North + West) || saw.Contains(elf + North + East)))
+                        if (test == 0 && !(saw[0] || saw[1] || saw[2]))
                         {
                             // Console.WriteLine(" north");
                             proposedMoves.Add(elf, elf + North);
                             break;
                         }
-                        if (test == 1 && !(saw.Contains(elf + South) || saw.Contains(elf + South + West) || saw.Contains(elf + South + East)))
+                        if (test == 1 && !(saw[4] || saw[5] || saw[6]))
                         {
                             // Console.WriteLine(" south");
                             proposedMoves.Add(elf, elf + South);
                             break;
                         }
-                        if (test == 2 && !(saw.Contains(elf + West) || saw.Contains(elf + West + South) || saw.Contains(elf + West + North)))
+                        if (test == 2 && !(saw[6] || saw[7] || saw[0]))
                         {
                             // Console.WriteLine(" west");
                             proposedMoves.Add(elf, elf + West);
                             break;
                         }
-                        if (test == 3 && !(saw.Contains(elf + East) || saw.Contains(elf + East + South) || saw.Contains(elf + East + North)))
+                        if (test == 3 && !(saw[2] || saw[3] || saw[4]))
                         {
                             // Console.WriteLine(" east");
                             proposedMoves.Add(elf, elf + East);
@@ -159,9 +163,9 @@ class Day23 : Puzzle
 
             }
             // if (!sawElf) break;
-            foreach (var kv in proposedMoves)
+            
+            foreach (var kv in proposedMoves.GroupBy(kv => kv.Value).Where(kv => kv.Count() == 1).Select(kv => kv.First()))
             {
-                if (proposedMoves.Any(kv2 => kv2.Value == kv.Value && kv.Key != kv2.Key)) continue;
                 // Console.WriteLine($"Elf {kv.Key} move {kv.Value}");
                 elves.Remove(kv.Key);
                 elves.Add(kv.Value);
@@ -182,6 +186,7 @@ class Day23 : Puzzle
             // }
             loop++;
             TimeCheck($"turn {loop}");
+            if (loop > 1e5) return;
             // Console.WriteLine(elves.Count);
         }
         var min = elves.Aggregate(Point2D.Min);
