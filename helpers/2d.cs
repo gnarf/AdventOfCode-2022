@@ -82,6 +82,11 @@ public class Point2D : IEquatable<Point2D>
         return Math.Abs(x - other.x) + Math.Abs(y - other.y);
     }
 
+    public Point2D CycleMod(Point2D domain)
+    {
+        return new Point2D( ((x % domain.x) + domain.x) % domain.x, ((y % domain.y) + domain.y) % domain.y);
+    }
+
     public override string ToString()
     {
         return String.Format("Point2D({0},{1})", x, y);
