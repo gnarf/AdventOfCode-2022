@@ -37,11 +37,13 @@ class Day25 : Puzzle
             var v = (remaining % 5);
             if (v == 4)
             {
+                // -1 == 4 mod 5
                 result = "-" + result;
                 remaining += 1;
             }
             else if (v == 3)
             {
+                // -2 == 3 mod 5
                 result = "=" + result;
                 remaining += 2;
             }
@@ -60,6 +62,7 @@ class Day25 : Puzzle
                 result = "0" + result;
                 // remaining -= 1;
             }
+            // since we added or subtracted the mod5 value - this is always perfect integer divison
             remaining /= 5;
         }
         return result;
