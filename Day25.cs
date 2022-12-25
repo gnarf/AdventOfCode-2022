@@ -30,38 +30,37 @@ class Day25 : Puzzle
     {
         var result = "";
 
-        long currentDigit = 1;
         long remaining = d;
 
         while (remaining != 0)
         {
-            var v = (remaining % (currentDigit*5)) / currentDigit;
+            var v = (remaining % 5);
             if (v == 4)
             {
                 result = "-" + result;
-                remaining += 1 * (currentDigit);
+                remaining += 1;
             }
             else if (v == 3)
             {
                 result = "=" + result;
-                remaining += 2 * currentDigit;
+                remaining += 2;
             }
             else if (v == 2)
             {
                 result = "2" + result;
-                remaining -= 2 * currentDigit;
+                remaining -= 2;
             }
             else if (v == 1)
             {
                 result = "1" + result;
-                remaining -= 1 * currentDigit;
+                remaining -= 1;
             }
             else if (v == 0)
             {
                 result = "0" + result;
                 // remaining -= 1;
             }
-            currentDigit *= 5;
+            remaining /= 5;
         }
         return result;
     }
